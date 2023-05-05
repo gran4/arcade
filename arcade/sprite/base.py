@@ -87,7 +87,8 @@ class BasicSprite:
         self._position = new_value
         self._hit_box.position = new_value
         self.update_spatial_hash()
-        self.resync_Hitbox_outline()
+        if self.Hitbox_outline:
+            self.resync_Hitbox_outline()
 
         for sprite_list in self.sprite_lists:
             sprite_list._update_position(self)
@@ -145,7 +146,8 @@ class BasicSprite:
             self._scale = new_value / self._texture.width, self._scale[1]
             self._hit_box.scale = self._scale
             self._width = new_value
-            self.resync_Hitbox_outline()
+            if self.Hitbox_outline:
+                self.resync_Hitbox_outline()
 
             self.update_spatial_hash()
             for sprite_list in self.sprite_lists:
@@ -162,7 +164,8 @@ class BasicSprite:
             self._scale = self._scale[0], new_value / self._texture.height
             self._hit_box.scale = self._scale
             self._height = new_value
-            self.resync_Hitbox_outline()
+            if self.Hitbox_outline:
+                self.resync_Hitbox_outline()
 
             self.update_spatial_hash()
             for sprite_list in self.sprite_lists:
@@ -204,7 +207,8 @@ class BasicSprite:
         if self._texture:
             self._width = self._texture.width * self._scale[0]
             self._height = self._texture.height * self._scale[1]
-        self.resync_Hitbox_outline()
+        if self.Hitbox_outline:
+            self.resync_Hitbox_outline()
 
         self.update_spatial_hash()
         for sprite_list in self.sprite_lists:
@@ -225,7 +229,8 @@ class BasicSprite:
         if self._texture:
             self._width = self._texture.width * self._scale[0]
             self._height = self._texture.height * self._scale[1]
-        self.resync_Hitbox_outline()
+        if self.Hitbox_outline:
+            self.resync_Hitbox_outline()
 
         self.update_spatial_hash()
 
@@ -586,18 +591,18 @@ class BasicSprite:
         :param color: Color of box
         :param line_thickness: How thick the box should be
         """
-        self.resync_Hitbox_outline()
+        if not self.Hitbox_outline:
+            self.resync_Hitbox_outline()
         self.Hitbox_outline.draw()
 
     def resync_Hitbox_outline(self):
         """
         Resyncs Hitbox_outline if it has been drawn before
         """
-        if not self.Hitbox_outline:
-            points = self.hit_box.get_adjusted_points()
-            # NOTE: This is a COPY operation. We don't want to modify the points.
-            points = tuple(points) + tuple(points[:-1])
-            arcade.create_line_loop(points, color=color, line_width=line_thickness)
+        points = self.hit_box.get_adjusted_points()
+        # NOTE: This is a COPY operation. We don't want to modify the points.
+        points = tuple(points) + tuple(points[:-1])
+        arcade.create_line_loop(points, color=color, line_width=line_thickness)
 
     # ---- Shortcut Methods ----
 
