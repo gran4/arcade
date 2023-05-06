@@ -602,7 +602,7 @@ class BasicSprite:
         points = self.hit_box.get_adjusted_points()
         # NOTE: This is a COPY operation. We don't want to modify the points.
         points = tuple(points) + tuple(points[:-1])
-        arcade.create_line_loop(points, color=color, line_width=line_thickness)
+        self.Hitbox_outline = arcade.create_line_loop(points, color=color, line_width=line_thickness)
 
     # ---- Shortcut Methods ----
 
